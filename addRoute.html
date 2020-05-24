@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NYC subway: Add a route</title>
+    
+  </head>
+
+  <body>
+    <h1>Select the station, direction and train you want to data for</h1>
+    
+    <form  id="routeOptions" name="routeOptions" method="POST">
+        {% if check == 0 %}
+            <strong>Station : </strong>
+                <select id="newStation" name="newStation">
+                    {% for station in stationData %}
+                        <option value="{{ station[0] }}" >{{ station[1] }}</option>
+                    {%endfor%}
+                </select><br/>
+        
+        {% elif check == 1 %}
+                <select id="newStation" name="newStation">
+                        <option value="{{ directionData[0][0] }}" ></option>
+                </select><br/>
+        
+            <strong>Direction : </strong>
+                <select id="newDirection" name="newDirection">
+                    <option value="North" >{{ directionData[0][1] }}</option>
+                    <option value="South" >{{ directionData[0][2] }}</option>
+                </select><br/>
+        
+        <script>document.getElementById("newStation").style.display = "none";</script>
+        
+        {% elif check == 2 %}
+            <strong>Train : </strong>
+                <select id="newStop" name="newStop">
+                    {% for stop in stopData %}
+                        <option value="{{ stop[0] }}" >{{ stop[1] }}</option>
+                    {%endfor%}
+                </select><br/>
+        
+        {% endif %}
+          
+
+        
+            <input type="submit" value="Add selection">
+      </form>
+    
+      
+  </body>
+</html>

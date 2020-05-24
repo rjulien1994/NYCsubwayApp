@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NYC subway: Sign in</title>
+    
+  </head>
+
+  <body>
+    <h1>Please login to access your routes</h1>
+    
+    <form  id="loginForm" name="loginForm" method="POST">
+        <strong>UserName : </strong><input type="text" id="userName" name="userName" value=""><br/>
+        <strong>Password :</strong> <input type="password" id="password" name="password" value=""><br/>
+        <input type="submit" value="Log In">
+    </form>
+    
+      <p>Don't have an account? Sign up <a href="/signUp">here</a></p>
+
+    <script type="text/javascript">
+        Msg = {{ Msg|tojson }};
+        if (Msg !== '') {
+            alert(Msg);
+        }
+    </script>
+
+  </body>
+</html>
