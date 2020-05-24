@@ -15,7 +15,7 @@ myDatabase = "NYCsubwayDB"
 myPort = 2500
 
 #Connection parameters with MTA database
-api_key = '4895a85c8b036d218bba904960d9ff87'                #Developper's key
+api_key = 'Your developper key'                #Developper's key
 MTAfeedID = ['1','26','16','21','2','11','31','36','51']    #MTA full feed id
 
 def fetchStationDataFromMTA(): #Outputs Station ID by station and line
