@@ -1,0 +1,84 @@
+SHOW tables;
+
+show status like 'Conn%';
+SELECT stationID FROM StopsTable;
+DROP TABLE Stations;
+DROP TABLE scheduleTable;
+
+CREATE TABLE Stations (
+    stationName VARCHAR(40), 
+    stationID VARCHAR(3) NOT NULL,  
+    northBound VARCHAR(45), 
+    southBound VARCHAR(45),
+    latitude DECIMAL(9, 6),
+    longitude DECIMAL(9, 6),
+    CONSTRAINT PK_station PRIMARY KEY (stationID)
+);
+
+SELECT stationName, stationID, northBound, southBound FROM Stations;
+
+CREATE TABLE LinesTable (
+    lineID VARCHAR(3) NOT NULL,
+    color VARCHAR(15),
+    express BIT,
+    CONSTRAINT PK_line PRIMARY KEY (lineID)
+);
+
+CREATE TABLE StopsTable (
+    stopID int NOT NULL AUTO_INCREMENT,
+    stationID VARCHAR(3) NOT NULL,
+    lineID VARCHAR(3) NOT NULL,
+    direction CHAR(5),
+    CHECK (direction IN ('North', 'South') ),
+    CONSTRAINT PK_stop PRIMARY KEY (stopID),
+    CONSTRAINT FK_stop_station FOREIGN KEY (stationID) REFERENCES Stations(stationID),
+    CONSTRAINT FK_stop_line FOREIGN KEY (lineID) REFERENCES LinesTable(lineID)
+);
+
+SELECT * FROM StopsTable WHERE stationID = 'D13';
+SELECT stopID, lineID, direction FROM StopsTable WHERE stationID='G35';
+
+CREATE TABLE scheduleTable (
+    tripID VARCHAR(20),
+    stopID int NOT NULL,
+    arrivalTime BIGINT,
+    CONSTRAINT PK_schedule PRIMARY KEY (tripID, stopID),
+    CONSTRAINT FK_schedule_stop FOREIGN KEY (stopID) REFERENCES StopsTable(stopID)
+);
+
+SELECT count(*) FROM scheduleTable; #what is the current cardinality of Schedule
+
+CREATE TABLE UsersTable (
+    userID int NOT NULL AUTO_INCREMENT,
+    userName VARCHAR(20),
+    userPassword VARCHAR(25),
+    userEmail VARCHAR(50),
+    CONSTRAINT PK_user PRIMARY KEY (userID)
+);
+
+INSERT INTO UsersTable(userName, userPassword, userEmail) VALUES ('Aclient', 'extraPsd', 'client@email.com');
+SELECT * FROM UsersTable;
+
+CREATE TABLE requestTable (
+    requestID int NOT NULL AUTO_INCREMENT,
+    userID int NOT NULL,
+    stopID int NOT NULL,
+    CONSTRAINT PK_request PRIMARY KEY (requestID),
+    CONSTRAINT FK_request_user FOREIGN KEY (userID) REFERENCES UsersTable(userID),
+    CONSTRAINT FK_request_stop FOREIGN KEY (stopID) REFERENCES StopsTable(stopID)
+);
+
+INSERT INTO requestTable VALUES (2, 1, 232);
+UPDATE requestTable SET stopID=977 WHERE requestID=2;
+SELECT * FROM requestTable;
+DELETE FROM requestTable WHERE requestID=2;
+
+SELECT Stations.stationID, StopsTable.stopID, StopsTable.lineID, direction, stationName, northBound, southBound 
+FROM requestTable, StopsTable, Stations #A variation of this is used to create text in UX
+WHERE requestTable.stopID = StopsTable.stopID 
+    AND Stations.stationID = StopsTable.stationID
+    AND requestTable.userID = 1;
+
+SELECT arrivalTime
+FROM scheduleTable
+WHERE scheduleTable.stopID = '23';
