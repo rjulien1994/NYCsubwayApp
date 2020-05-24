@@ -3,9 +3,9 @@ import mysql.connector
 import numpy as np
 
 #Connection with private raspberry pi server
-myHost = "85.201.144.18"     #These parameters are set when you build your database
-myUser = "julien"          #This is where you have to put your info
-myPassword = "Ejordan1994-"
+myHost = "hostIP"     #These parameters are set when you build your database
+myUser = "User"          #This is where you have to put your info
+myPassword = "secretPassword"
 myDatabase = "NYCsubwayDB"
 myPort = 2500
 
